@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Taxi2Airport.com.au | Sydney Airport Transfers, Maxi Taxi & Fixed Fare Booking</title>
+    <meta
+      name="description"
+      content="Book Taxi2Airport.com.au for Sydney airport transfers, maxi taxis, wheelchair accessible transfers, cruise transfers, baby seat bookings, and fixed fare private rides."
+    />
+    <meta
+      name="keywords"
+      content="Sydney airport transfers, maxi cab Sydney, airport taxi Sydney, wheelchair accessible taxi Sydney, baby seat taxi Sydney, cruise transfer Sydney, fixed fare taxi Sydney"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TaxiService",
+        "name": "Taxi2Airport.com.au",
+        "url": "https://www.taxi2airport.com.au/",
+        "areaServed": ["Sydney", "Sydney Airport", "Parramatta", "Bankstown", "Liverpool", "Blacktown", "Bondi", "Penrith"],
+        "telephone": "1300 22 77 00",
+        "email": "book@taxi2airport.com.au",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sydney",
+          "addressRegion": "NSW",
+          "addressCountry": "AU"
+        },
+        "serviceType": ["Airport Transfers", "Maxi Cab", "Wheelchair Accessible Taxi", "Cruise Transfers", "Corporate Transfers"]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=25" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Taxi2Airport home">
+        <img class="brand-logo" src="assets/taxi2airport-logo-reference.png" alt="Taxi2Airport" />
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="active" href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#fleet">Fleet</a>
+        <a href="#routes">Routes</a>
+        <a href="#booking">Book</a>
+        <a href="#crm">CRM</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-call" href="tel:1300227700">1300 22 77 00</a>
+        <a class="button primary nav-button" href="#booking">Book Now</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Sydney airport taxi, maxi cab & private transfers</p>
+          <h1>Sydney Airport Transfers <span>Made Easy.</span></h1>
+          <p class="hero-text">
+            Book fixed fare airport transfers, maxi taxis, wheelchair accessible transfers, cruise transfers, baby seat bookings, and premium rides across Sydney with 24/7 availability.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#booking">Get instant quote</a>
+            <a class="button ghost" href="tel:1300227700">Call 1300 22 77 00</a>
+          </div>
+          <div class="trust-strip" aria-label="Service highlights">
+            <span><strong>24/7 Service</strong><small>Always available</small></span>
+            <span><strong>Fixed Prices</strong><small>No hidden fees</small></span>
+            <span><strong>Flight Tracking</strong><small>We follow your flight</small></span>
+          </div>
+        </div>
+        <aside class="quote-card" id="booking" aria-label="Booking and fare estimator">
+          <div class="tabs" role="tablist" aria-label="Trip type">
+            <button class="tab active" type="button" data-trip="one-way">One way</button>
+            <button class="tab" type="button" data-trip="return">Return</button>
+          </div>
+
+          <form id="bookingForm" class="booking-form">
+            <label>
+              Service
+              <select id="serviceType" required></select>
+            </label>
+            <label>
+              Pickup location
+              <input id="pickup" type="text" list="addressSuggestions" placeholder="Start typing pickup address" autocomplete="street-address" required />
+            </label>
+            <label>
+              Drop-off location
+              <input id="dropoff" type="text" list="addressSuggestions" placeholder="Start typing drop-off address" autocomplete="street-address" required />
+            </label>
+            <datalist id="addressSuggestions"></datalist>
+            <div class="form-grid">
+              <label>
+                Date
+                <input id="date" type="date" required />
+              </label>
+              <label>
+                Time
+                <input id="time" type="time" required />
+              </label>
+            </div>
+            <div class="form-grid">
+              <label>
+                Passengers
+                <input id="passengers" type="number" min="1" max="45" value="2" required />
+              </label>
+              <label>
+                Luggage
+                <input id="luggage" type="number" min="0" max="60" value="1" required />
+              </label>
+            </div>
+            <label>
+              Vehicle
+              <select id="vehicle" required></select>
+            </label>
+            <div class="addons" aria-label="Optional extras">
+              <label><input id="meetGreet" type="checkbox" /> Meet & greet</label>
+              <label><input id="childSeat" type="checkbox" /> Child seat</label>
+              <label><input id="flightTracking" type="checkbox" checked /> Flight tracking</label>
+            </div>
+            <label>
+              Customer name
+              <input id="customer" type="text" placeholder="Full name" required />
+            </label>
+            <div class="form-grid">
+              <label>
+                Phone
+                <input id="phone" type="tel" placeholder="0400 000 000" required />
+              </label>
+              <label>
+                Flight no.
+                <input id="flight" type="text" placeholder="QF001" />
+              </label>
+            </div>
+            <label class="bot-field" aria-hidden="true">
+              Company website
+              <input id="website" type="text" tabindex="-1" autocomplete="off" />
+            </label>
+            <output class="fare-output" id="fareOutput" aria-live="polite">$0 estimated fare</output>
+            <button class="button primary wide" type="submit">Get instant quote</button>
+            <a class="quote-phone" href="tel:1300227700">or call 1300 22 77 00</a>
+          </form>
+        </aside>
+      </section>
+
+      <section class="logos-band" aria-label="Reputation">
+        <div>
+          <small>Taxi2Airport.com.au</small>
+          <strong>Fixed Fare Quotes</strong>
+          <span>No hidden fees</span>
+        </div>
+        <div>
+          <small>Airport specialists</small>
+          <strong>Flight Monitoring</strong>
+          <span>Pickup timing adjusted</span>
+        </div>
+        <div>
+          <small>Sydney wide</small>
+          <strong>Private Transfers</strong>
+          <span>Door to airport service</span>
+        </div>
+        <div>
+          <strong>Professional Drivers</strong>
+          <span>Fully licensed & experienced</span>
+        </div>
+        <div>
+          <strong>Clean & Safe Vehicles</strong>
+          <span>Regularly cleaned & maintained</span>
+        </div>
+        <div>
+          <strong>On-Time Guarantee</strong>
+          <span>Your time, our priority</span>
+        </div>
+      </section>
+
+      <section class="section services" id="services">
+        <div class="section-heading">
+          <div class="section-intro">
+            <p class="eyebrow">Why choose Taxi2Airport.com.au?</p>
+            <h2>Your journey.<br />Our priority.</h2>
+            <p>We go the extra mile to make your Sydney airport taxi, maxi cab, cruise transfer or accessible ride smooth and stress-free.</p>
+            <a class="button primary" href="#booking">Learn More</a>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span class="icon">✓</span>
+            <h3>Airport pickup & drop-off</h3>
+            <p>Scheduled Sydney Airport domestic and international terminal transfers with flight tracking and clear pickup instructions.</p>
+          </article>
+          <article>
+            <span class="icon">$</span>
+            <h3>Fixed fare taxi quotes</h3>
+            <p>Transparent estimates for airport taxis, maxi cabs, tolls, parking allowance, baby seats, luggage and meet-and-greet options.</p>
+          </article>
+          <article>
+            <span class="icon">24</span>
+            <h3>Maxi cab group travel</h3>
+            <p>Spacious maxi taxi and van options for families, events, business groups, luggage-heavy airport rides and cruise transfers.</p>
+          </article>
+          <article>
+            <span class="icon">★</span>
+            <h3>Accessible & family options</h3>
+            <p>Wheelchair accessible taxi requests, baby seat bookings, professional drivers and clean vehicles for private transfers.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section seo-services" aria-label="Sydney taxi services">
+        <div class="section-intro">
+          <p class="eyebrow">High-demand services</p>
+          <h2>Sydney taxi services built for search and conversion.</h2>
+        </div>
+        <div class="seo-grid">
+          <article>
+            <h3>Sydney Airport Transfers</h3>
+            <p>Private airport pickup and drop-off for Sydney Domestic Terminal, International Terminal, CBD hotels, suburbs and regional NSW.</p>
+            <a class="text-link" href="services/sydney-airport-transfers.html">Sydney airport transfer details</a>
+          </article>
+          <article>
+            <h3>Maxi Cab Sydney</h3>
+            <p>Book 7, 10 and 11 seater maxi cab style transfers for groups, luggage, events, weddings, cruise terminals and airport runs.</p>
+            <a class="text-link" href="services/maxi-cab-sydney.html">Maxi cab service details</a>
+          </article>
+          <article>
+            <h3>Wheelchair Accessible Taxi</h3>
+            <p>Accessible taxi requests for wheelchair passengers, medical appointments, airport travel and point-to-point Sydney transfers.</p>
+            <a class="text-link" href="services/wheelchair-accessible-taxi.html">Accessible taxi details</a>
+          </article>
+          <article>
+            <h3>Premium Corporate Transfers</h3>
+            <p>Premium Taxi2Airport.com.au business transfers with reliable drivers, clean vehicles, simple booking management and professional airport pickups.</p>
+            <a class="text-link" href="services/corporate-airport-transfers.html">Corporate transfer details</a>
+          </article>
+          <article>
+            <h3>Baby Seat Taxi</h3>
+            <p>Family airport transfers with child seat options, extra luggage planning and pre-booked pickups for stress-free travel.</p>
+            <a class="text-link" href="services/baby-seat-taxi.html">Baby seat taxi details</a>
+          </article>
+          <article>
+            <h3>Cruise & Hotel Transfers</h3>
+            <p>Transfers between Sydney Airport, Circular Quay, White Bay Cruise Terminal, hotels, homes and major Sydney suburbs.</p>
+            <a class="text-link" href="services/cruise-hotel-transfers.html">Cruise transfer details</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fleet" id="fleet">
+        <div class="section-heading">
+          <div class="section-intro">
+            <p class="eyebrow">Our fleet</p>
+            <h2>Travel in comfort</h2>
+            <p>Choose a well-maintained vehicle to suit your passenger and luggage needs.</p>
+            <a class="button primary" href="#booking">View Fleet</a>
+          </div>
+        </div>
+        <div class="fleet-grid" id="fleetGrid"></div>
+      </section>
+
+      <section class="route-panel" id="routes">
+        <div>
+          <p class="eyebrow">Popular routes</p>
+          <h2>Serving Sydney and beyond.</h2>
+          <ul>
+            <li>Sydney Airport (SYD) transfers</li>
+            <li>CBD, hotels, and suburbs</li>
+            <li>Domestic and international terminals</li>
+            <li>Cruise terminal transfers</li>
+            <li>Parramatta, Bankstown, Liverpool, Blacktown, Bondi and Penrith</li>
+            <li>Blue Mountains, Wollongong, Newcastle and regional NSW</li>
+          </ul>
+        </div>
+        <div class="route-card">
+          <div class="route-cta">
+            <h3>Booking is quick and easy!</h3>
+            <p>Get an instant quote now and travel stress-free.</p>
+            <a class="button primary" href="#booking">Book your ride</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="local-areas" aria-label="Sydney service areas">
+        <p class="eyebrow">Service areas</p>
+        <h2>Airport transfers across Sydney suburbs.</h2>
+        <div class="area-tags">
+          <span>Sydney CBD</span>
+          <span>Parramatta</span>
+          <span>Bankstown</span>
+          <span>Liverpool</span>
+          <span>Blacktown</span>
+          <span>Penrith</span>
+          <span>Bondi</span>
+          <span>Chatswood</span>
+          <span>Manly</span>
+          <span>Olympic Park</span>
+          <span>Wollongong</span>
+          <span>Newcastle</span>
+        </div>
+      </section>
+
+      <section class="section reviews" aria-label="Customer reviews">
+        <div class="section-heading">
+          <div class="section-intro">
+            <p class="eyebrow">What our customers say</p>
+            <h2>Real reviews.<br />Real experiences.</h2>
+            <a class="text-link" href="#crm">View booking CRM</a>
+          </div>
+        </div>
+        <div class="review-grid">
+          <article>
+            <strong>Sarah M.</strong>
+            <small>May 2025</small>
+            <span>★★★★★</span>
+            <p>Excellent service. Driver was on time, very friendly and helped with luggage.</p>
+          </article>
+          <article>
+            <strong>James T.</strong>
+            <small>May 2025</small>
+            <span>★★★★★</span>
+            <p>Booked a return transfer and everything was seamless. Highly recommend.</p>
+          </article>
+          <article>
+            <strong>Priya K.</strong>
+            <small>May 2025</small>
+            <span>★★★★★</span>
+            <p>Great communication, clean car and a safe driver after arriving in Sydney.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section crm" id="crm">
+        <div class="crm-lock" id="crmLock">
+          <div>
+            <p class="eyebrow">Private CRM</p>
+            <h2>Password protected booking dashboard.</h2>
+            <p>Enter the admin password to view bookings, customer details, fares, and booking status controls.</p>
+          </div>
+          <form class="crm-login" id="crmLogin">
+            <label>
+              CRM password
+              <input id="crmPassword" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="button primary wide" type="submit">Unlock CRM</button>
+            <p class="crm-error" id="crmError" role="alert"></p>
+          </form>
+        </div>
+
+        <div class="crm-panel locked" id="crmPanel" aria-hidden="true">
+          <div class="crm-head">
+            <div>
+              <p class="eyebrow">Booking CRM</p>
+              <h2>Manage transfers from one dashboard.</h2>
+            </div>
+            <div class="crm-actions">
+              <input id="crmSearch" type="search" placeholder="Search bookings" />
+              <button class="button secondary" id="exportCsv" type="button">Export CSV</button>
+              <button class="button secondary" id="lockCrm" type="button">Lock CRM</button>
+            </div>
+          </div>
+
+          <div class="stats-grid" id="statsGrid"></div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Customer</th>
+                  <th>Journey</th>
+                  <th>Date</th>
+                  <th>Vehicle</th>
+                  <th>Fare</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="bookingRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div>
+          <h2>Ready to book your ride?</h2>
+          <p>Book in advance or ride on demand. We are available 24/7.</p>
+        </div>
+        <div>
+          <a class="button dark" href="#booking">Book Now</a>
+          <a href="tel:1300227700">or call 1300 22 77 00</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        <img class="footer-logo" src="assets/taxi2airport-logo-reference.png" alt="Taxi2Airport" />
+        <p>Your journey. Our priority.</p>
+      </div>
+      <nav class="footer-links" aria-label="Service pages">
+        <a href="services/sydney-airport-transfers.html">Airport transfers</a>
+        <a href="services/maxi-cab-sydney.html">Maxi cab Sydney</a>
+        <a href="services/wheelchair-accessible-taxi.html">Wheelchair taxi</a>
+        <a href="services/corporate-airport-transfers.html">Corporate transfers</a>
+        <a href="services/baby-seat-taxi.html">Baby seat taxi</a>
+        <a href="services/cruise-hotel-transfers.html">Cruise transfers</a>
+      </nav>
+      <address>
+        Sydney, NSW, Australia<br />
+        <a href="mailto:book@taxi2airport.com.au">book@taxi2airport.com.au</a><br />
+        <a href="tel:1300227700">1300 22 77 00</a>
+      </address>
+    </footer>
+
+    <script src="app.js?v=25"></script>
+  </body>
+</html>
