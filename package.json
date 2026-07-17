@@ -2,34 +2,20 @@
   "name": "taxi4drive",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev:web\" \"npm run dev:api\"",
-    "dev:web": "next dev -p 3000",
-    "dev:api": "node server/index.js",
-    "build": "next build",
-    "start": "concurrently \"next start -p 3000\" \"node server/index.js\"",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@next/third-parties": "^15.3.4",
-    "concurrently": "^9.2.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.468.0",
-    "mongodb": "^6.17.0",
-    "next": "^15.3.4",
-    "nodemailer": "^6.10.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "zod": "^3.25.67"
+    "dev:web": "npm run dev -w @taxi4drive/web",
+    "dev:api": "npm run dev -w @taxi4drive/api",
+    "build": "npm run build -w @taxi4drive/web",
+    "start": "concurrently \"npm run start -w @taxi4drive/web\" \"npm run start -w @taxi4drive/api\"",
+    "lint": "npm run lint -w @taxi4drive/web",
+    "backup": "npm run backup -w @taxi4drive/api",
+    "mobile": "npm run start -w @taxi4drive/mobile"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9.29.0",
-    "eslint-config-next": "^15.3.4",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "concurrently": "^9.2.0"
   }
 }

@@ -1,19 +1,20 @@
 import "./globals.css";
 import { Montserrat, Poppins } from "next/font/google";
 
-const siteUrl = "https://www.taxi2airport.com.au";
+const siteUrl = "https://taxi2airport.com.au";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-body" });
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-display" });
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Taxi2Airport.com.au | Sydney Airport Transfers, Maxi Taxi & Fixed Fare Booking",
-    template: "%s | Taxi2Airport.com.au"
+    default: "Taxi2Airport | Sydney Airport Transfers, Maxi Cab & Accessible Taxi Booking",
+    template: "%s | Taxi2Airport"
   },
   description:
-    "Book Taxi2Airport.com.au for Sydney airport transfers, maxi taxis, wheelchair accessible transfers, cruise transfers, baby seat bookings, and fixed fare private rides.",
+    "Book Taxi2Airport for reliable Sydney airport transfers, maxi cabs, wheelchair accessible taxis, cruise transfers, baby seat taxis, corporate rides and group transport.",
   keywords: [
+    "Taxi2Airport",
     "Sydney airport transfers",
     "maxi cab Sydney",
     "airport taxi Sydney",
@@ -26,11 +27,11 @@ export const metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Taxi2Airport.com.au | Sydney Airport Transfers",
+    title: "Taxi2Airport | Sydney Airport Transfers, Made Easy",
     description:
-      "Fixed fare airport transfers, maxi taxis, wheelchair accessible transfers, cruise transfers, baby seat bookings, and premium rides across Sydney.",
+      "Reliable, professional and on-time Sydney airport transfers, maxi cab, wheelchair taxi, baby seat taxi, cruise transfer and group transport booking.",
     url: siteUrl,
-    siteName: "Taxi2Airport.com.au",
+    siteName: "Taxi2Airport",
     locale: "en_AU",
     type: "website",
     images: [
@@ -38,15 +39,15 @@ export const metadata = {
         url: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1600&q=80",
         width: 1600,
         height: 900,
-        alt: "Sydney harbour and city skyline"
+        alt: "Sydney skyline"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taxi2Airport.com.au | Sydney Airport Transfers",
+    title: "Taxi2Airport | Sydney Airport Transfers, Made Easy",
     description:
-      "Sydney airport taxi, maxi cab and private transfers with fixed fare booking."
+      "Reliable Sydney airport transfers and private transfers with fast online booking and direct phone contact."
   }
 };
 
@@ -54,17 +55,16 @@ export default function RootLayout({ children }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "TaxiService",
-    name: "Taxi2Airport.com.au",
+    name: "Taxi2Airport",
     url: siteUrl,
     areaServed: [
       "Sydney",
       "Sydney Airport",
-      "Parramatta",
-      "Bankstown",
-      "Liverpool",
-      "Blacktown",
-      "Bondi",
-      "Penrith"
+      "Sydney CBD",
+      "Eastern Suburbs",
+      "Inner West",
+      "North Shore",
+      "Western Sydney"
     ],
     telephone: "1300 22 77 00",
     email: "book@taxi2airport.com.au",
@@ -79,7 +79,9 @@ export default function RootLayout({ children }) {
       "Maxi Cab",
       "Wheelchair Accessible Taxi",
       "Cruise Transfers",
-      "Corporate Transfers"
+      "Corporate Transfers",
+      "Baby Seat Taxi",
+      "Group Transfers"
     ]
   };
 
