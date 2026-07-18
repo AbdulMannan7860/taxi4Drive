@@ -7,6 +7,9 @@
     "preview": {
       "distribution": "internal",
       "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://taxi4drive.onrender.com/api"
+      },
       "android": {
         "buildType": "apk"
       }
