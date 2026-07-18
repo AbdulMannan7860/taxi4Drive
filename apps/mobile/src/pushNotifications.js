@@ -13,6 +13,10 @@ Notifications.setNotificationHandler({
 });
 
 export async function registerForPushNotificationsAsync() {
+  if (Platform.OS === "web") {
+    throw new Error("Push notifications aren't supported in a web browser -- install the Android APK to receive them.");
+  }
+
   if (!Device.isDevice) {
     throw new Error("Push notifications require a physical device.");
   }
