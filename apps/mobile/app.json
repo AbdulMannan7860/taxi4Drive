@@ -13,6 +13,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.taxi2airport.admin",
       "adaptiveIcon": {
         "backgroundColor": "#0b1d33",
         "foregroundImage": "./assets/android-icon-foreground.png",
