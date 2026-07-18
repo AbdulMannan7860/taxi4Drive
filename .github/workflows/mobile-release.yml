@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: apps/mobile/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -59,6 +59,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
+        working-directory: .
         run: npm ci
 
       - name: Publish update
@@ -88,7 +89,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: apps/mobile/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
@@ -97,6 +98,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
+        working-directory: .
         run: npm ci
 
       - name: Build Android APK
