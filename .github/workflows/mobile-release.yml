@@ -37,14 +37,14 @@ jobs:
       run:
         working-directory: apps/mobile
     steps:
+      - uses: actions/checkout@v5
+
       - name: Check for EXPO_TOKEN
         run: |
           if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
             echo "Missing EXPO_TOKEN repo secret -- see apps/mobile/CLAUDE.md for setup steps."
             exit 1
           fi
-
-      - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v6
         with:
@@ -75,14 +75,14 @@ jobs:
       run:
         working-directory: apps/mobile
     steps:
+      - uses: actions/checkout@v5
+
       - name: Check for EXPO_TOKEN
         run: |
           if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
             echo "Missing EXPO_TOKEN repo secret -- see apps/mobile/CLAUDE.md for setup steps."
             exit 1
           fi
-
-      - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v6
         with:
