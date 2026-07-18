@@ -35,6 +35,15 @@
           "resizeMode": "contain"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "aa66a2f8-435f-4e9c-a050-82979e702627"
+      }
+    },
+    "owner": "abdul_5110",
+    "updates": {
+      "url": "https://u.expo.dev/aa66a2f8-435f-4e9c-a050-82979e702627"
+    }
   }
 }
