@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1097747644886",
+    "project_id": "taxi2airport-b3a4f",
+    "storage_bucket": "taxi2airport-b3a4f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097747644886:android:a65c43b968b5fb13ab6477",
+        "android_client_info": {
+          "package_name": "com.taxi2airport.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMaGZ5goif6f_TKa03QBYESvvHEsw4XlA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
