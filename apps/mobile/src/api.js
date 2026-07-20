@@ -23,3 +23,9 @@ export function registerPushToken(jwt, token, platform) {
     body: JSON.stringify({ token, platform })
   });
 }
+
+export function getBookings(jwt) {
+  return request("/bookings", {
+    headers: { Authorization: `Bearer ${jwt}` }
+  });
+}

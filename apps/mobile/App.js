@@ -4,7 +4,7 @@ import * as Notifications from "expo-notifications";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useRef, useState } from "react";
 import { Platform, SafeAreaView, StatusBar } from "react-native";
-import { login, registerPushToken } from "./src/api";
+import { getBookings, login, registerPushToken } from "./src/api";
 import { registerForPushNotificationsAsync } from "./src/pushNotifications";
 import DetailsScreen from "./src/screens/DetailsScreen";
 import LoginScreen from "./src/screens/LoginScreen";
@@ -33,6 +33,12 @@ export default function App() {
   useEffect(() => {
     if (!jwt) return;
 
+    getBookings(jwt)
+      .then(({ bookings }) => {
+        setNotifications(bookings.map((booking) => ({ booking, receivedAt: new Date(booking.createdAt) })));
+      })
+      .catch((error) => setPushWarning(error.message));
+
     registerForPushNotificationsAsync()
       .then((token) => registerPushToken(jwt, token, Platform.OS))
       .catch((error) => setPushWarning(error.message));
@@ -40,7 +46,10 @@ export default function App() {
     receivedListener.current = Notifications.addNotificationReceivedListener((notification) => {
       const booking = notification.request.content.data?.booking;
       if (!booking) return;
-      setNotifications((current) => [{ booking, receivedAt: new Date() }, ...current]);
+      setNotifications((current) => {
+        if (current.some((item) => item.booking.reference === booking.reference)) return current;
+        return [{ booking, receivedAt: new Date() }, ...current];
+      });
     });
 
     responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
