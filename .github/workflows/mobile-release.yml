@@ -64,6 +64,8 @@ jobs:
 
       - name: Publish update
         run: eas update --branch production --auto --non-interactive
+        env:
+          EXPO_PUBLIC_API_URL: https://taxi4drive.onrender.com/api
 
   eas-build:
     name: Build APK and publish release
