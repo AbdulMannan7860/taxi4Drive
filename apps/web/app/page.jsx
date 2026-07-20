@@ -289,7 +289,6 @@ export default function HomePage() {
               <label className="bot-field" aria-hidden="true">Company website
                 <input value={booking.website} onChange={(event) => updateBooking("website", event.target.value)} type="text" tabIndex="-1" autoComplete="off" />
               </label>
-              <output className="fare-output" aria-live="polite">Estimated fare from ${fare}</output>
               <button className="button primary wide" type="submit" disabled={bookingState.status === "loading"}>
                 {bookingState.status === "loading" ? "Sending..." : "Submit request"}
               </button>

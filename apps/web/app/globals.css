@@ -233,10 +233,6 @@
     @apply absolute -left-[10000px] h-px w-px overflow-hidden;
   }
 
-  .fare-output {
-    @apply block rounded-md bg-navy p-3 text-center text-lg font-extrabold text-white;
-  }
-
   .form-message {
     @apply m-0 rounded-md p-3 text-sm font-bold;
   }
@@ -550,8 +546,12 @@
     @apply bg-gold text-navy;
   }
 
+  .location-field {
+    @apply min-w-0;
+  }
+
   .location-field-trigger {
-    @apply flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md border border-line bg-white px-3 text-left text-body outline-none transition hover:border-gold focus:border-gold focus:ring-4 focus:ring-gold/20;
+    @apply flex min-h-11 w-full min-w-0 cursor-pointer items-center gap-2 overflow-hidden rounded-md border border-line bg-white px-3 text-left text-body outline-none transition hover:border-gold focus:border-gold focus:ring-4 focus:ring-gold/20;
   }
 
   .location-field-trigger span {
