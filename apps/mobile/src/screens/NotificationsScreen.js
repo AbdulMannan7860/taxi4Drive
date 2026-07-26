@@ -1,8 +1,29 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useMemo, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors, fonts } from "../theme";
 
+const FILTERS = [
+  { value: "all", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "dispatched", label: "Dispatched" },
+  { value: "completed", label: "Completed" }
+];
+
+const STATUS_COLORS = {
+  pending: colors.steel,
+  dispatched: colors.gold,
+  completed: colors.success
+};
+
 export default function NotificationsScreen({ notifications, pushWarning, onSelect, onSignOut }) {
+  const [filter, setFilter] = useState("all");
+
+  const filtered = useMemo(() => {
+    if (filter === "all") return notifications;
+    return notifications.filter((item) => item.booking.status === filter);
+  }, [notifications, filter]);
+
   return (
     <View style={styles.container}>
       <View style={styles.brandRow}>
@@ -20,11 +41,28 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
 
       {pushWarning && <Text style={styles.warning}>{pushWarning}</Text>}
 
-      {notifications.length === 0 ? (
-        <Text style={styles.empty}>No bookings yet. New requests will show up here.</Text>
+      <View style={styles.filterRow}>
+        {FILTERS.map((item) => {
+          const active = filter === item.value;
+          return (
+            <TouchableOpacity
+              key={item.value}
+              style={[styles.filterPill, active && styles.filterPillActive]}
+              onPress={() => setFilter(item.value)}
+            >
+              <Text style={[styles.filterPillText, active && styles.filterPillTextActive]}>{item.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+
+      {filtered.length === 0 ? (
+        <Text style={styles.empty}>
+          {notifications.length === 0 ? "No bookings yet. New requests will show up here." : "No bookings in this status."}
+        </Text>
       ) : (
         <FlatList
-          data={notifications}
+          data={filtered}
           keyExtractor={(item) => item.booking.reference}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.card} onPress={() => onSelect(item)}>
@@ -37,6 +75,10 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
                 <Text style={styles.route}>
                   {item.booking.pickup} → {item.booking.dropoff}
                 </Text>
+              </View>
+              <View style={styles.statusBadge}>
+                <View style={[styles.statusDot, { backgroundColor: STATUS_COLORS[item.booking.status] || colors.steel }]} />
+                <Text style={styles.statusLabel}>{item.booking.status || "pending"}</Text>
               </View>
               <Ionicons name="chevron-forward" size={18} color={colors.slate} />
             </TouchableOpacity>
@@ -57,6 +99,18 @@ const styles = StyleSheet.create({
   signOutButton: { flexDirection: "row", alignItems: "center", gap: 4 },
   signOut: { fontFamily: fonts.body, color: colors.steel, fontSize: 14 },
   warning: { fontFamily: fonts.body, color: colors.gold, marginBottom: 16, fontSize: 13 },
+  filterRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
+  filterPill: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: "center"
+  },
+  filterPillActive: { backgroundColor: colors.gold, borderColor: colors.gold },
+  filterPillText: { fontFamily: fonts.bodySemiBold, color: colors.steel, fontSize: 12 },
+  filterPillTextActive: { color: colors.night },
   empty: { fontFamily: fonts.body, color: colors.slate, fontSize: 15, marginTop: 40, textAlign: "center" },
   card: {
     flexDirection: "row",
@@ -80,5 +134,8 @@ const styles = StyleSheet.create({
   cardBody: { flex: 1 },
   reference: { fontFamily: fonts.bodyBold, color: colors.gold, fontSize: 14, marginBottom: 4 },
   customer: { fontFamily: fonts.bodySemiBold, color: colors.white, fontSize: 16, marginBottom: 2 },
-  route: { fontFamily: fonts.body, color: colors.steel, fontSize: 14 }
+  route: { fontFamily: fonts.body, color: colors.steel, fontSize: 14 },
+  statusBadge: { alignItems: "center", marginRight: 4 },
+  statusDot: { width: 8, height: 8, borderRadius: 4, marginBottom: 4 },
+  statusLabel: { fontFamily: fonts.body, color: colors.steel, fontSize: 10, textTransform: "capitalize" }
 });

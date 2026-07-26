@@ -30,9 +30,15 @@ const bookingSchema = z.object({
   website: z.string().max(0).optional().default("")
 });
 
-const statusSchema = z.object({
-  status: z.enum(["pending", "contacted", "quoted", "confirmed", "completed", "cancelled"])
-});
+const statusSchema = z
+  .object({
+    status: z.enum(["pending", "dispatched", "completed"]),
+    driverName: z.string().min(2).max(120).optional()
+  })
+  .refine((data) => data.status !== "dispatched" || !!data.driverName, {
+    message: "Driver name is required when dispatching a booking.",
+    path: ["driverName"]
+  });
 
 const pushTokenSchema = z.object({
   token: z.string().min(10).max(200),

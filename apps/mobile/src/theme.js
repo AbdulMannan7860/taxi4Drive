@@ -6,7 +6,8 @@ export const colors = {
   white: "#ffffff",
   steel: "#b8c1cc",
   slate: "#60666d",
-  error: "#ff8080"
+  error: "#ff8080",
+  success: "#4ade80"
 };
 
 export const fonts = {

@@ -69,6 +69,15 @@ export default function App() {
     setJwt(data.token);
   }
 
+  function handleStatusUpdate(updatedBooking) {
+    setNotifications((current) =>
+      current.map((item) =>
+        item.booking.reference === updatedBooking.reference ? { ...item, booking: updatedBooking } : item
+      )
+    );
+    setSelected((current) => (current ? { ...current, booking: updatedBooking } : current));
+  }
+
   async function handleSignOut() {
     await SecureStore.deleteItemAsync(JWT_KEY);
     setJwt(null);
@@ -87,7 +96,12 @@ export default function App() {
       {!jwt ? (
         <LoginScreen onLogin={handleLogin} />
       ) : selected ? (
-        <DetailsScreen booking={selected.booking} onBack={() => setSelected(null)} />
+        <DetailsScreen
+          booking={selected.booking}
+          jwt={jwt}
+          onBack={() => setSelected(null)}
+          onStatusUpdate={handleStatusUpdate}
+        />
       ) : (
         <NotificationsScreen
           notifications={notifications}

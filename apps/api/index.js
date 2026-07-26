@@ -166,7 +166,12 @@ app.patch("/api/bookings/:id/status", requireAdmin, async (req, res, next) => {
 
     const parsed = statusSchema.safeParse(req.body);
     if (!parsed.success) {
-      return sendError(res, 400, "INVALID_STATUS", "Invalid booking status.");
+      return sendError(
+        res,
+        400,
+        "INVALID_STATUS",
+        parsed.error.issues[0]?.message || "Invalid booking status."
+      );
     }
 
     const existing = await bookingsCollection().findOne({ _id: new ObjectId(req.params.id) });
@@ -174,15 +179,19 @@ app.patch("/api/bookings/:id/status", requireAdmin, async (req, res, next) => {
       return sendError(res, 404, "BOOKING_NOT_FOUND", "Booking not found.");
     }
 
+    const update = { status: parsed.data.status, updatedAt: new Date() };
+    if (parsed.data.driverName) update.driverName = parsed.data.driverName;
+
     const result = await bookingsCollection().findOneAndUpdate(
       { _id: new ObjectId(req.params.id) },
-      { $set: { status: parsed.data.status, updatedAt: new Date() } },
+      { $set: update },
       { returnDocument: "after" }
     );
 
     await writeAuditLog("booking.status.updated", result._id, req.admin?.role || "admin", {
       from: existing.status,
-      to: parsed.data.status
+      to: parsed.data.status,
+      driverName: parsed.data.driverName
     });
 
     return sendSuccess(res, { booking: result }, "Booking status updated.");
