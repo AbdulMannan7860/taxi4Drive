@@ -109,7 +109,7 @@
   }
 
   .hero {
-    @apply relative isolate grid min-h-[calc(100vh-72px)] grid-cols-1 items-center gap-8 overflow-hidden bg-night bg-cover bg-center px-5 py-10 md:px-[5vw] lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)] lg:px-[72px] lg:py-16;
+    @apply relative isolate grid min-h-[calc(100vh-72px)] grid-cols-1 items-center gap-8 overflow-hidden bg-night px-5 py-10 md:px-[5vw] lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)] lg:px-[72px] lg:py-16;
   }
 
   .hero::before {

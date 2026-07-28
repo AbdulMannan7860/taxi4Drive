@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Montserrat, Poppins } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const siteUrl = "https://taxi2airport.com.au";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-body" });
@@ -68,12 +70,6 @@ export default function RootLayout({ children }) {
     ],
     telephone: "1300 22 77 00",
     email: "book@taxi2airport.com.au",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Sydney",
-      addressRegion: "NSW",
-      addressCountry: "AU"
-    },
     serviceType: [
       "Airport Transfers",
       "Maxi Cab",
@@ -93,6 +89,8 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

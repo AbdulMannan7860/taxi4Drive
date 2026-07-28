@@ -19,6 +19,7 @@ import {
   Sparkles,
   Users
 } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import LocationField from "./components/LocationField";
 
@@ -176,7 +177,7 @@ export default function HomePage() {
     <>
       <header className="site-header">
         <a className="brand" href="#home" aria-label="Taxi2Airport home">
-          <img className="brand-logo" src="/brand/logo.webp" alt="Taxi2Airport" />
+          <Image className="brand-logo" src="/brand/logo.webp" alt="Taxi2Airport" width={1414} height={514} priority />
         </a>
         <nav className="nav" aria-label="Primary navigation">
           <a href="#about">About</a>
@@ -190,7 +191,15 @@ export default function HomePage() {
       </header>
 
       <main id="home">
-        <section className="hero" style={{ backgroundImage: `url(${imageSet[0].src})` }}>
+        <section className="hero">
+          <Image
+            src={imageSet[0].src}
+            alt={imageSet[0].alt}
+            fill
+            priority
+            sizes="100vw"
+            className="absolute inset-0 -z-20 object-cover"
+          />
           <div className="hero-copy">
             <p className="eyebrow">Sydney Airport Transfer Specialists</p>
             <h1>Sydney Airport Transfers, <span className="text-gold">Made Easy.</span></h1>
@@ -210,7 +219,7 @@ export default function HomePage() {
             <div className="hero-image-strip" aria-label="Sydney transfer snapshots">
               {imageSet.slice(0, 3).map((image) => (
                 <figure key={image.label}>
-                  <img src={image.src} alt={image.alt} />
+                  <Image src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 33vw, 100vw" />
                   <figcaption>{image.label}</figcaption>
                 </figure>
               ))}
@@ -337,7 +346,7 @@ export default function HomePage() {
               <h2>Choose by passengers, bags and accessibility needs.</h2>
             </div>
             <figure>
-              <img src={imageSet[3].src} alt={imageSet[3].alt} />
+              <Image src={imageSet[3].src} alt={imageSet[3].alt} fill sizes="(min-width: 1024px) 420px, 100vw" />
               <figcaption>Room for people, plans and bags.</figcaption>
             </figure>
           </div>
@@ -373,7 +382,7 @@ export default function HomePage() {
             </ul>
           </div>
           <figure className="serving-photo">
-            <img src={imageSet[0].src} alt="Sydney taxi transfer" />
+            <Image src={imageSet[0].src} alt="Sydney taxi transfer" fill sizes="(min-width: 1024px) 50vw, 100vw" />
             <div className="serving-cta">
               <h3>Booking is quick and easy!</h3>
               <p>Get an instant quote now and travel stress-free.</p>
@@ -423,7 +432,7 @@ export default function HomePage() {
 
       <footer className="footer">
         <a className="brand footer-brand" href="#home" aria-label="Taxi2Airport home">
-          <img className="brand-logo" src="/brand/logo-white.png" alt="Taxi2Airport" />
+          <Image className="brand-logo" src="/brand/logo-white.png" alt="Taxi2Airport" width={1414} height={514} />
         </a>
         <p>Maxi cab, airport, cruise, group and accessible taxi bookings across Sydney and surrounding areas.</p>
         <a href={contact.phoneHref}>{contact.phone}</a>
