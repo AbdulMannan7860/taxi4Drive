@@ -1,6 +1,21 @@
-const siteUrl = "https://taxi2airport.com.au";
+import { headers } from "next/headers";
 
-export default function robots() {
+const siteUrl = "https://taxi2airport.com.au";
+const productionHosts = ["taxi2airport.com.au", "www.taxi2airport.com.au"];
+
+export default async function robots() {
+  const headersList = await headers();
+  const host = headersList.get("host") || "";
+
+  if (!productionHosts.includes(host)) {
+    return {
+      rules: {
+        userAgent: "*",
+        disallow: "/"
+      }
+    };
+  }
+
   return {
     rules: {
       userAgent: "*",

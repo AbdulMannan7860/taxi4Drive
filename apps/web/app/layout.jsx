@@ -8,11 +8,11 @@ const montserrat = Montserrat({ subsets: ["latin"], weight: ["600", "700", "800"
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Taxi2Airport | Sydney Airport Transfers, Maxi Cab & Accessible Taxi Booking",
+    default: "Taxi2Airport | Sydney Airport Transfers & Maxi Cab Booking",
     template: "%s | Taxi2Airport"
   },
   description:
-    "Book Taxi2Airport for reliable Sydney airport transfers, maxi cabs, wheelchair accessible taxis, cruise transfers, baby seat taxis, corporate rides and group transport.",
+    "Book reliable Sydney airport transfers with Taxi2Airport: maxi cabs, wheelchair accessible taxis, cruise transfers and corporate rides, 24/7.",
   keywords: [
     "Taxi2Airport",
     "Sydney airport transfers",

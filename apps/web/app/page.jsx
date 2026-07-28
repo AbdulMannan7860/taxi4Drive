@@ -17,7 +17,6 @@ import {
   Ship,
   ShieldCheck,
   Sparkles,
-  Star,
   Users
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -77,15 +76,6 @@ const servingRoutes = [
   "CBD, Hotels & Suburbs",
   "Cruise Terminals",
   "Blue Mountains & Regional NSW"
-];
-
-// Placeholder testimonials -- structural placeholders mirroring the client's own
-// Figma mockup sample reviews, not real customer quotes. Swap for real Google
-// reviews before launch.
-const testimonials = [
-  { initials: "S.M.", quote: "Driver was on time, very friendly and helped with our luggage. Would book again.", role: "Airport Transfer Customer" },
-  { initials: "J.T.", quote: "Booked a return transfer and everything was seamless from pickup to drop-off.", role: "Return Transfer Customer" },
-  { initials: "P.K.", quote: "Clean car, safe driver and great communication. Best airport transfer in Sydney.", role: "Airport Transfer Customer" }
 ];
 
 const imageSet = [
@@ -390,27 +380,6 @@ export default function HomePage() {
               <a className="button primary" href="#booking">Book Your Ride <ChevronRight size={18} /></a>
             </div>
           </figure>
-        </section>
-
-        <section className="section testimonials" aria-label="Customer testimonials">
-          <div className="section-intro wide-intro">
-            <p className="eyebrow">What Our Customers Say</p>
-            <h2>Real Reviews. Real Experiences.</h2>
-          </div>
-          <div className="testimonial-grid">
-            {testimonials.map((item) => (
-              <article className="testimonial-card" key={item.initials}>
-                <div className="testimonial-stars" aria-hidden="true">
-                  {Array.from({ length: 5 }).map((_, index) => <Star key={index} size={16} fill="currentColor" />)}
-                </div>
-                <p>&ldquo;{item.quote}&rdquo;</p>
-                <div className="testimonial-author">
-                  <span className="testimonial-avatar">{item.initials}</span>
-                  <span><strong>{item.role}</strong><small>Verified booking</small></span>
-                </div>
-              </article>
-            ))}
-          </div>
         </section>
 
         <section className="section cta-banner" aria-label="Ready to book">
