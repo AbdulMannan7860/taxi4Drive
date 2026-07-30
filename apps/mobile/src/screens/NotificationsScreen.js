@@ -66,8 +66,14 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
           keyExtractor={(item) => item.booking.reference}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.card} onPress={() => onSelect(item)}>
-              <View style={styles.cardIcon}>
-                <Ionicons name="car" size={18} color={colors.gold} />
+              <View style={styles.cardTopRow}>
+                <View style={styles.cardIcon}>
+                  <Ionicons name="car" size={18} color={colors.gold} />
+                </View>
+                <View style={styles.statusBadge}>
+                  <View style={[styles.statusDot, { backgroundColor: STATUS_COLORS[item.booking.status] || colors.steel }]} />
+                  <Text style={styles.statusLabel}>{item.booking.status || "pending"}</Text>
+                </View>
               </View>
               <View style={styles.cardBody}>
                 <Text style={styles.reference}>{item.booking.reference}</Text>
@@ -76,11 +82,6 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
                   {item.booking.pickup} → {item.booking.dropoff}
                 </Text>
               </View>
-              <View style={styles.statusBadge}>
-                <View style={[styles.statusDot, { backgroundColor: STATUS_COLORS[item.booking.status] || colors.steel }]} />
-                <Text style={styles.statusLabel}>{item.booking.status || "pending"}</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.slate} />
             </TouchableOpacity>
           )}
         />
@@ -113,15 +114,18 @@ const styles = StyleSheet.create({
   filterPillTextActive: { color: colors.night },
   empty: { fontFamily: fonts.body, color: colors.slate, fontSize: 15, marginTop: 40, textAlign: "center" },
   card: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
     backgroundColor: colors.navy,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
     borderColor: colors.border
+  },
+  cardTopRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12
   },
   cardIcon: {
     height: 36,
@@ -131,11 +135,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  cardBody: { flex: 1 },
+  cardBody: {},
   reference: { fontFamily: fonts.bodyBold, color: colors.gold, fontSize: 14, marginBottom: 4 },
   customer: { fontFamily: fonts.bodySemiBold, color: colors.white, fontSize: 16, marginBottom: 2 },
   route: { fontFamily: fonts.body, color: colors.steel, fontSize: 14 },
-  statusBadge: { alignItems: "center", marginRight: 4 },
-  statusDot: { width: 8, height: 8, borderRadius: 4, marginBottom: 4 },
-  statusLabel: { fontFamily: fonts.body, color: colors.steel, fontSize: 10, textTransform: "capitalize" }
+  statusBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    backgroundColor: colors.night,
+    borderWidth: 1,
+    borderColor: colors.border
+  },
+  statusDot: { width: 8, height: 8, borderRadius: 4 },
+  statusLabel: { fontFamily: fonts.bodySemiBold, color: colors.steel, fontSize: 11, textTransform: "capitalize" }
 });

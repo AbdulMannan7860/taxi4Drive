@@ -394,11 +394,23 @@
   }
 
   .fleet-card-photo {
-    @apply relative mb-4 grid h-32 place-items-center overflow-hidden rounded-md border border-dashed border-line bg-mist text-navy/30;
+    @apply relative mb-4 grid h-40 place-items-center overflow-hidden rounded-md border border-line bg-mist text-navy/30;
+  }
+
+  .fleet-card-photo--placeholder {
+    @apply border-dashed;
+  }
+
+  .fleet-card-photo img {
+    @apply object-contain p-3;
   }
 
   .fleet-card-photo span {
     @apply absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-white/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-subtle;
+  }
+
+  .fleet-card-model {
+    @apply -mt-1 mb-2 text-sm font-semibold text-slate;
   }
 
   .fleet-card p {

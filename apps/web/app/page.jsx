@@ -49,13 +49,91 @@ const serviceTypes = [
 ];
 
 const vehicles = [
-  { name: "Sedan", detail: "Everyday point-to-point travel", passengers: "1-4", luggage: "1-4", icon: CarFront },
-  { name: "Premium Sedan", detail: "Quiet executive airport transfers", passengers: "1-4", luggage: "1-3", icon: Sparkles },
-  { name: "SUV", detail: "Extra room for bags and families", passengers: "1-4", luggage: "1-6", icon: CarFront },
-  { name: "Maxi 7 Seater", detail: "Groups, events and airport runs", passengers: "1-7", luggage: "1-8", icon: Users },
-  { name: "Maxi 7 Premium", detail: "Premium group transfers", passengers: "1-7", luggage: "1-8", icon: Users },
-  { name: "Maxi 11 Seater", detail: "Large groups with serious luggage", passengers: "1-11", luggage: "1-18", icon: Users },
-  { name: "Wheelchair Taxi", detail: "Accessible taxi with secure boarding", passengers: "1-8", luggage: "1-16", wheelchair: "Up to 2", icon: Accessibility }
+  {
+    name: "Sedan",
+    model: "Toyota Camry",
+    detail: "Everyday point-to-point travel",
+    passengers: "1-4",
+    luggage: "1-4",
+    icon: CarFront,
+    image: {
+      src: "/fleet/toyota-camry.png",
+      alt: "Silver Toyota Camry sedan, studio shot"
+    }
+  },
+  {
+    name: "Premium Sedan",
+    model: "Lexus ES 300",
+    detail: "Quiet executive airport transfers",
+    passengers: "1-4",
+    luggage: "1-3",
+    icon: Sparkles,
+    image: {
+      src: "/fleet/lexus-es-300.png",
+      alt: "Black Lexus ES 300 executive sedan, studio shot"
+    }
+  },
+  {
+    name: "SUV",
+    model: "Toyota Kluger",
+    detail: "Extra room for bags and families",
+    passengers: "1-4",
+    luggage: "1-6",
+    icon: CarFront,
+    image: {
+      src: "/fleet/toyota-kluger.png",
+      alt: "White Toyota Kluger SUV, studio shot"
+    }
+  },
+  {
+    name: "Maxi 7 Seater",
+    model: "Kia Carnival",
+    detail: "Groups, events and airport runs",
+    passengers: "1-7",
+    luggage: "1-8",
+    icon: Users,
+    image: {
+      src: "/fleet/kia-carnival.png",
+      alt: "White Kia Carnival people-mover, studio shot"
+    }
+  },
+  {
+    name: "Maxi 7 Premium",
+    model: "Mercedes V-Class",
+    detail: "Premium group transfers",
+    passengers: "1-7",
+    luggage: "1-8",
+    icon: Users,
+    image: {
+      src: "/fleet/mercedes-v-class.png",
+      alt: "Black Mercedes-Benz V-Class premium van, studio shot"
+    }
+  },
+  {
+    name: "Maxi 11 Seater",
+    model: "Toyota HiAce Commuter",
+    detail: "Large groups with serious luggage",
+    passengers: "1-11",
+    luggage: "1-18",
+    icon: Users,
+    image: {
+      src: "/fleet/toyota-hiace-commuter.png",
+      alt: "White Toyota HiAce Commuter van, studio shot"
+    }
+  },
+  {
+    name: "Wheelchair Taxi",
+    model: "Toyota HiAce (wheelchair accessible)",
+    detail: "Accessible taxi with secure boarding",
+    passengers: "1-8",
+    luggage: "1-16",
+    wheelchair: "Up to 2",
+    icon: Accessibility,
+    image: {
+      src: "/fleet/toyota-hiace-wheelchair.png",
+      alt: "White Toyota HiAce with rear wheelchair access ramp deployed, studio shot"
+    }
+  }
 ];
 
 const highlights = [
@@ -138,6 +216,7 @@ function estimateFare(booking) {
 export default function HomePage() {
   const [booking, setBooking] = useState(initialBooking);
   const [bookingState, setBookingState] = useState({ status: "idle", message: "" });
+  const [brokenFleetPhotos, setBrokenFleetPhotos] = useState({});
   const fare = useMemo(() => estimateFare(booking), [booking]);
 
   function updateBooking(field, value) {
@@ -351,13 +430,26 @@ export default function HomePage() {
             </figure>
           </div>
           <div className="fleet-grid">
-            {vehicles.map(({ name, detail, passengers, luggage, wheelchair, icon: Icon }) => (
+            {vehicles.map(({ name, model, detail, passengers, luggage, wheelchair, icon: Icon, image }) => (
               <article className="fleet-card" key={name}>
-                <div className="fleet-card-photo">
-                  <Icon size={40} />
-                  <span>Photo coming soon</span>
+                <div className={`fleet-card-photo${image && !brokenFleetPhotos[name] ? "" : " fleet-card-photo--placeholder"}`}>
+                  {image && !brokenFleetPhotos[name] ? (
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      sizes="(min-width: 1280px) 22vw, (min-width: 768px) 45vw, 100vw"
+                      onError={() => setBrokenFleetPhotos((current) => ({ ...current, [name]: true }))}
+                    />
+                  ) : (
+                    <>
+                      <Icon size={40} />
+                      <span>Photo coming soon</span>
+                    </>
+                  )}
                 </div>
                 <h3>{name}</h3>
+                {model && <p className="fleet-card-model">{model}</p>}
                 <p>{detail}</p>
                 <dl>
                   <div><dt>Passengers</dt><dd>{passengers}</dd></div>
