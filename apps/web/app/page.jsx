@@ -213,19 +213,75 @@ function estimateFare(booking) {
   return Math.round((58 + vehicleBoost + passengerBoost + luggageBoost) * returnBoost);
 }
 
+const PHONE_PATTERN = "^[+]?[0-9\\s()-]{6,20}$";
+const PHONE_RE = new RegExp(PHONE_PATTERN);
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function countDigits(value) {
+  return (value.match(/\d/g) || []).length;
+}
+
+function todayIso() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function validateBooking(booking) {
+  const errors = {};
+
+  if (!booking.customerName.trim() || !/\p{L}/u.test(booking.customerName)) {
+    errors.customerName = "Enter your full name.";
+  }
+
+  const phone = booking.phone.trim();
+  if (!PHONE_RE.test(phone) || countDigits(phone) < 8) {
+    errors.phone = "Enter a valid phone number, e.g. +61 4XX XXX XXX.";
+  }
+
+  if (!EMAIL_RE.test(booking.email.trim())) {
+    errors.email = "Enter a valid email address.";
+  }
+
+  if (!booking.date) {
+    errors.date = "Choose a pickup date.";
+  } else if (booking.date < todayIso()) {
+    errors.date = "Pickup date can't be in the past.";
+  }
+
+  if (!booking.time) {
+    errors.time = "Choose a pickup time.";
+  }
+
+  return errors;
+}
+
 export default function HomePage() {
   const [booking, setBooking] = useState(initialBooking);
   const [bookingState, setBookingState] = useState({ status: "idle", message: "" });
+  const [fieldErrors, setFieldErrors] = useState({});
   const [brokenFleetPhotos, setBrokenFleetPhotos] = useState({});
   const fare = useMemo(() => estimateFare(booking), [booking]);
 
   function updateBooking(field, value) {
     setBooking((current) => ({ ...current, [field]: value }));
+    setFieldErrors((current) => {
+      if (!current[field]) return current;
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
   }
 
   async function submitBooking(event) {
     event.preventDefault();
     if (booking.website) return;
+
+    const errors = validateBooking(booking);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setBookingState({ status: "error", message: "Please fix the highlighted fields below." });
+      return;
+    }
+    setFieldErrors({});
     setBookingState({ status: "loading", message: "Sending your request..." });
 
     try {
@@ -334,10 +390,25 @@ export default function HomePage() {
               </div>
               <div className="form-grid tight">
                 <label>Date
-                  <input value={booking.date} onChange={(event) => updateBooking("date", event.target.value)} type="date" required />
+                  <input
+                    value={booking.date}
+                    onChange={(event) => updateBooking("date", event.target.value)}
+                    type="date"
+                    min={todayIso()}
+                    aria-invalid={Boolean(fieldErrors.date)}
+                    required
+                  />
+                  {fieldErrors.date && <span className="field-error">{fieldErrors.date}</span>}
                 </label>
                 <label>Time
-                  <input value={booking.time} onChange={(event) => updateBooking("time", event.target.value)} type="time" required />
+                  <input
+                    value={booking.time}
+                    onChange={(event) => updateBooking("time", event.target.value)}
+                    type="time"
+                    aria-invalid={Boolean(fieldErrors.time)}
+                    required
+                  />
+                  {fieldErrors.time && <span className="field-error">{fieldErrors.time}</span>}
                 </label>
               </div>
               <div className="form-grid tight">
@@ -355,14 +426,40 @@ export default function HomePage() {
               </label>
               <div className="form-grid">
                 <label>Name
-                  <input value={booking.customerName} onChange={(event) => updateBooking("customerName", event.target.value)} type="text" placeholder="Full name" required />
+                  <input
+                    value={booking.customerName}
+                    onChange={(event) => updateBooking("customerName", event.target.value)}
+                    type="text"
+                    placeholder="Full name"
+                    aria-invalid={Boolean(fieldErrors.customerName)}
+                    required
+                  />
+                  {fieldErrors.customerName && <span className="field-error">{fieldErrors.customerName}</span>}
                 </label>
                 <label>Mobile
-                  <input value={booking.phone} onChange={(event) => updateBooking("phone", event.target.value)} type="tel" placeholder="+61..." required />
+                  <input
+                    value={booking.phone}
+                    onChange={(event) => updateBooking("phone", event.target.value)}
+                    type="tel"
+                    placeholder="+61 4XX XXX XXX"
+                    pattern={PHONE_PATTERN}
+                    title="Enter a valid phone number, e.g. +61 4XX XXX XXX."
+                    aria-invalid={Boolean(fieldErrors.phone)}
+                    required
+                  />
+                  {fieldErrors.phone && <span className="field-error">{fieldErrors.phone}</span>}
                 </label>
               </div>
               <label>Email
-                <input value={booking.email} onChange={(event) => updateBooking("email", event.target.value)} type="email" placeholder="you@example.com" required />
+                <input
+                  value={booking.email}
+                  onChange={(event) => updateBooking("email", event.target.value)}
+                  type="email"
+                  placeholder="you@example.com"
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  required
+                />
+                {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
               </label>
               <label className="bot-field" aria-hidden="true">Company website
                 <input value={booking.website} onChange={(event) => updateBooking("website", event.target.value)} type="text" tabIndex="-1" autoComplete="off" />

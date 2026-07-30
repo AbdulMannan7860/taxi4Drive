@@ -52,6 +52,11 @@
     @apply min-h-11 w-full rounded-md border border-line bg-white px-3 text-body outline-none transition focus:border-gold focus:ring-4 focus:ring-gold/20;
   }
 
+  input[aria-invalid="true"],
+  select[aria-invalid="true"] {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-200;
+  }
+
   img {
     @apply block max-w-full;
   }
@@ -243,6 +248,10 @@
 
   .form-message.error {
     @apply bg-red-50 text-red-800;
+  }
+
+  .field-error {
+    @apply text-xs font-semibold text-red-700;
   }
 
   .quick-contact {

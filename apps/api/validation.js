@@ -21,9 +21,14 @@ const bookingSchema = z.object({
   babySeatType: z.string().max(80).optional().default(""),
   business: z.boolean().default(false),
   flightTracking: z.boolean().default(true),
-  customerName: z.string().min(2).max(120),
+  customerName: z.string().min(2).max(120).regex(/\p{L}/u, "Enter a valid full name."),
   email: z.string().email().max(160),
-  phone: z.string().min(6).max(40),
+  phone: z
+    .string()
+    .min(6)
+    .max(40)
+    .regex(/^[+]?[0-9\s()-]{6,20}$/, "Enter a valid phone number.")
+    .refine((value) => (value.match(/\d/g) || []).length >= 8, "Enter a valid phone number."),
   flightNumber: z.string().max(40).optional().default(""),
   instructions: z.string().max(500).optional().default(""),
   estimatedFare: z.coerce.number().min(0).max(10000),
