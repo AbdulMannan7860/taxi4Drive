@@ -2,6 +2,7 @@
 
 import { Crosshair, Loader2, MapPin, Search, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { loadGoogleMaps, SYDNEY_CENTER } from "../../lib/loadGoogleMaps";
 
 const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -237,9 +238,9 @@ export default function LocationPicker({ open, title, initialValue, showCurrentL
     onClose();
   }
 
-  if (!open) return null;
+  if (!open || typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div className="location-picker-overlay" role="dialog" aria-modal="true" aria-label={title}>
       <div className="location-picker-sheet">
         <header className="location-picker-header">
@@ -318,6 +319,7 @@ export default function LocationPicker({ open, title, initialValue, showCurrentL
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

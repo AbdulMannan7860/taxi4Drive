@@ -22,6 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import LocationField from "./components/LocationField";
+import WhatsAppIcon from "./components/WhatsAppIcon";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
@@ -326,7 +327,7 @@ export default function HomePage() {
             <div className="hero-actions" aria-label="Fast contact actions">
               <a className="button primary" href="#booking">Book online <ChevronRight size={18} /></a>
               <a className="button call" href={contact.phoneHref}><Phone size={18} /> {contact.phone}</a>
-              <a className="button ghost" href={contact.whatsappHref}><MessageCircle size={18} /> WhatsApp</a>
+              <a className="button ghost" href={contact.whatsappHref}><WhatsAppIcon size={18} /> WhatsApp</a>
             </div>
             <div className="trust-strip" aria-label="Service highlights">
               {highlights.map(([title, text, Icon]) => (
@@ -592,7 +593,7 @@ export default function HomePage() {
               <p>For urgent pickups, wheelchair access, baby seats or a larger group, the fastest path is a direct call. Online bookings are open for planned trips.</p>
               <div className="contact-actions">
                 <a className="button primary" href={contact.phoneHref}><Phone size={18} /> {contact.phone}</a>
-                <a className="button secondary" href={contact.whatsappHref}><MessageCircle size={18} /> WhatsApp</a>
+                <a className="button secondary" href={contact.whatsappHref}><WhatsAppIcon size={18} /> WhatsApp</a>
               </div>
             </div>
             <address className="contact-card">
