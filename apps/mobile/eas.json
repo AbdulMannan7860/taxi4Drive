@@ -8,7 +8,7 @@
       "distribution": "internal",
       "channel": "production",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://taxi4drive.onrender.com/api"
+        "EXPO_PUBLIC_API_URL": "https://taxi2airport-api.onrender.com/api"
       },
       "android": {
         "buildType": "apk"

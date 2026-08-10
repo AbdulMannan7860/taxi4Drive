@@ -18,10 +18,10 @@ function createTransporter() {
   });
 }
 
-function bookingHtml(booking, audience) {
+function bookingHtml(booking) {
   return `
     <div style="font-family:Arial,sans-serif;color:#071426;line-height:1.6">
-      <h2 style="margin:0 0 12px">Taxi4Drive booking ${audience === "admin" ? "received" : "confirmation"}</h2>
+      <h2 style="margin:0 0 12px">Taxi2Airport booking received</h2>
       <p><strong>Reference:</strong> ${booking.reference}</p>
       <p><strong>Customer:</strong> ${booking.customerName}</p>
       <p><strong>Phone:</strong> ${booking.phone}</p>
@@ -41,23 +41,15 @@ async function sendBookingEmails(booking) {
     return { skipped: true };
   }
 
-  const from = process.env.MAIL_FROM || "Taxi4Drive <book@taxi4drive.com.au>";
-  const adminEmail = process.env.ADMIN_EMAIL || "book@taxi4drive.com.au";
+  const from = process.env.MAIL_FROM || "Taxi2Airport <book@taxi2airport.com.au>";
+  const adminEmail = process.env.ADMIN_EMAIL || "book@taxi2airport.com.au";
 
-  await Promise.all([
-    transporter.sendMail({
-      from,
-      to: booking.email,
-      subject: `Taxi4Drive booking received - ${booking.reference}`,
-      html: bookingHtml(booking, "customer")
-    }),
-    transporter.sendMail({
-      from,
-      to: adminEmail,
-      subject: `New booking - ${booking.reference}`,
-      html: bookingHtml(booking, "admin")
-    })
-  ]);
+  await transporter.sendMail({
+    from,
+    to: adminEmail,
+    subject: `New booking - ${booking.reference}`,
+    html: bookingHtml(booking)
+  });
 
   return { skipped: false };
 }
