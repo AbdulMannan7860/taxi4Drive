@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock3,
-  Mail,
   MapPin,
   MessageCircle,
   Phone,
@@ -20,6 +19,7 @@ import {
   Users
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import LocationField from "./components/LocationField";
 
@@ -30,8 +30,6 @@ const contact = {
   phoneHref: "tel:1300822382",
   sms: "1300 822 382",
   smsHref: "sms:1300822382",
-  email: "book@taxi2airport.com.au",
-  emailHref: "mailto:book@taxi2airport.com.au",
   whatsappHref: "https://wa.me/61466997091",
   address: "Sydney, NSW, Australia"
 };
@@ -150,43 +148,43 @@ const whyChooseUs = [
 ];
 
 const servingRoutes = [
-  "Sydney Airport (SYD) Transfers",
-  "Domestic & International Terminals",
-  "CBD, Hotels & Suburbs",
-  "Cruise Terminals",
-  "Blue Mountains & Regional NSW"
+  ["Sydney Airport (SYD) Transfers", null],
+  ["Domestic & International Terminals", null],
+  ["CBD, Hotels & Suburbs", null],
+  ["Cruise Terminals", "/cruise-transfers-sydney"],
+  ["Blue Mountains & Regional NSW", "/sydney-airport-to-blue-mountains-transfer"]
 ];
 
 const imageSet = [
   {
-    src: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&h=1600&q=90",
+    src: "/scenes/sydney-wide.jpg",
     alt: "Professional taxi service vehicle ready for a city pickup",
     label: "Sydney wide"
   },
   {
-    src: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=82",
+    src: "/scenes/airport-transfers.jpg",
     alt: "Airport terminal with aircraft outside",
     label: "Airport transfers"
   },
   {
-    src: "https://images.pexels.com/photos/2399254/pexels-photo-2399254.jpeg?auto=compress&cs=tinysrgb&w=900",
+    src: "/scenes/fast-city-rides.jpg",
     alt: "Taxi travelling through a city street",
     label: "Fast city rides"
   },
   {
-    src: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=900&q=82",
+    src: "/scenes/luggage-ready.jpg",
     alt: "Traveller with luggage waiting for transport",
     label: "Luggage ready"
   }
 ];
 
 const services = [
-  ["Airport transfers", "Domestic and international airport pickups and drop-offs across Sydney with simple timing and flight details.", Plane],
-  ["Group transfers", "Spacious maxi taxis for families, friends, events, weddings, birthdays and race days.", Users],
-  ["Cruise transfers", "Door-to-terminal rides for Sydney's cruise terminals, hotels, homes and event connections.", Ship],
-  ["Baby seat taxi", "Infant, toddler and booster seat options can be requested while booking.", Baby],
-  ["Corporate transfers", "Clean vehicles and professional drivers for business trips and client movement.", BriefcaseBusiness],
-  ["Wheelchair taxi", "Accessible vehicles for mobility needs, appointments, airport travel and daily transport.", Accessibility]
+  ["Airport transfers", "Domestic and international airport pickups and drop-offs across Sydney with simple timing and flight details.", Plane, null],
+  ["Group transfers", "Spacious maxi taxis for families, friends, events, weddings, birthdays and race days.", Users, "/maxi-cab-group-transfers-sydney"],
+  ["Cruise transfers", "Door-to-terminal rides for Sydney's cruise terminals, hotels, homes and event connections.", Ship, "/cruise-transfers-sydney"],
+  ["Baby seat taxi", "Infant, toddler and booster seat options can be requested while booking.", Baby, "/baby-seat-taxi-sydney"],
+  ["Corporate transfers", "Clean vehicles and professional drivers for business trips and client movement.", BriefcaseBusiness, "/corporate-airport-transfers-sydney"],
+  ["Wheelchair taxi", "Accessible vehicles for mobility needs, appointments, airport travel and daily transport.", Accessibility, "/wheelchair-accessible-taxi-sydney"]
 ];
 
 const initialBooking = {
@@ -309,23 +307,7 @@ export default function HomePage() {
   }
 
   return (
-    <>
-      <header className="site-header">
-        <a className="brand" href="#home" aria-label="Taxi2Airport home">
-          <Image className="brand-logo" src="/brand/logo.webp" alt="Taxi2Airport" width={1414} height={514} priority />
-        </a>
-        <nav className="nav" aria-label="Primary navigation">
-          <a href="#about">About</a>
-          <a href="#fleet">Fleet</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div className="header-actions">
-          <a className="header-call" href={contact.phoneHref}><Phone size={17} /> {contact.phone}</a>
-          <a className="button primary nav-button" href="#booking">Book Now</a>
-        </div>
-      </header>
-
-      <main id="home">
+    <main id="home">
         <section className="hero">
           <Image
             src={imageSet[0].src}
@@ -485,7 +467,6 @@ export default function HomePage() {
         <section className="quick-contact" aria-label="Immediate contact options">
           <a href={contact.phoneHref}><Phone size={19} /><span>Call</span><strong>{contact.phone}</strong></a>
           <a href={contact.smsHref}><MessageCircle size={19} /><span>SMS</span><strong>{contact.sms}</strong></a>
-          <a href={contact.emailHref}><Mail size={19} /><span>Email</span><strong>{contact.email}</strong></a>
         </section>
 
         <section className="section about" id="about">
@@ -509,8 +490,17 @@ export default function HomePage() {
             <h2>One booking form for the rides people ask for most.</h2>
           </div>
           <div className="feature-grid">
-            {services.map(([title, text, Icon]) => (
-              <article key={title}><Icon size={25} /><h3>{title}</h3><p>{text}</p></article>
+            {services.map(([title, text, Icon, href]) => (
+              <article key={title}>
+                <Icon size={25} />
+                <h3>{title}</h3>
+                <p>{text}</p>
+                {href && (
+                  <Link className="mt-4 inline-flex font-extrabold text-gold transition hover:text-white" href={href}>
+                    Learn more
+                  </Link>
+                )}
+              </article>
             ))}
           </div>
         </section>
@@ -565,8 +555,11 @@ export default function HomePage() {
             <h2>Serving Sydney and Beyond</h2>
             <p className="mt-4 max-w-md text-muted">From Sydney Airport to your home, hotel or business, we&apos;ve got you covered.</p>
             <ul className="serving-list">
-              {servingRoutes.map((route) => (
-                <li key={route}><CheckCircle2 size={18} /> {route}</li>
+              {servingRoutes.map(([route, href]) => (
+                <li key={route}>
+                  <CheckCircle2 size={18} />{" "}
+                  {href ? <Link className="hover:text-amberline" href={href}>{route}</Link> : route}
+                </li>
               ))}
             </ul>
           </div>
@@ -603,7 +596,6 @@ export default function HomePage() {
               </div>
             </div>
             <address className="contact-card">
-              <a href={contact.emailHref}><Mail size={18} /> {contact.email}</a>
               <a href={contact.phoneHref}><Phone size={18} /> {contact.phone}</a>
               <a href={contact.smsHref}><MessageCircle size={18} /> SMS {contact.sms}</a>
               <span><MapPin size={18} /> {contact.address}</span>
@@ -611,21 +603,6 @@ export default function HomePage() {
             </address>
           </div>
         </section>
-      </main>
-
-      <div className="mobile-sticky-actions" aria-label="Sticky booking actions">
-        <a href={contact.phoneHref}><Phone size={18} /> Call</a>
-        <a href="#booking">Book</a>
-        <a href={contact.whatsappHref}><MessageCircle size={18} /> WhatsApp</a>
-      </div>
-
-      <footer className="footer">
-        <a className="brand footer-brand" href="#home" aria-label="Taxi2Airport home">
-          <Image className="brand-logo" src="/brand/logo-white.png" alt="Taxi2Airport" width={1414} height={514} />
-        </a>
-        <p>Maxi cab, airport, cruise, group and accessible taxi bookings across Sydney and surrounding areas.</p>
-        <a href={contact.phoneHref}>{contact.phone}</a>
-      </footer>
-    </>
+    </main>
   );
 }

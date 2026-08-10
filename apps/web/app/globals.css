@@ -255,7 +255,7 @@
   }
 
   .quick-contact {
-    @apply grid grid-cols-1 border-y border-black/10 bg-night text-white md:grid-cols-3;
+    @apply grid grid-cols-1 border-y border-black/10 bg-night text-white md:grid-cols-2;
   }
 
   .quick-contact a {
@@ -356,6 +356,10 @@
 
   .services {
     @apply bg-night;
+  }
+
+  .services h2 {
+    @apply text-white;
   }
 
   .feature-grid {

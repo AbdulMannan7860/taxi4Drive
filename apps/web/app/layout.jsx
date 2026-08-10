@@ -2,10 +2,17 @@ import "./globals.css";
 import { Montserrat, Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
+import MobileStickyActions from "./components/MobileStickyActions";
 
-const siteUrl = "https://taxi2airport.com.au";
+const siteUrl = "https://www.taxi2airport.com.au";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-body" });
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-display" });
+
+export const viewport = {
+  themeColor: "#0B1D33"
+};
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -38,9 +45,9 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1600&q=80",
+        url: `${siteUrl}/og-image.jpg`,
         width: 1600,
-        height: 900,
+        height: 1067,
         alt: "Sydney skyline"
       }
     ]
@@ -69,7 +76,6 @@ export default function RootLayout({ children }) {
       "Western Sydney"
     ],
     telephone: "1300 822 382",
-    email: "book@taxi2airport.com.au",
     serviceType: [
       "Airport Transfers",
       "Maxi Cab",
@@ -84,7 +90,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${montserrat.variable}`}>
+        <SiteHeader />
         {children}
+        <MobileStickyActions />
+        <SiteFooter />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

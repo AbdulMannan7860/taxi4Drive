@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 
-const siteUrl = "https://taxi2airport.com.au";
+const siteUrl = "https://www.taxi2airport.com.au";
 const productionHosts = ["taxi2airport.com.au", "www.taxi2airport.com.au"];
 
 export default async function robots() {
