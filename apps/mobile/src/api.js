@@ -5,9 +5,19 @@ async function request(path, options = {}) {
     ...options,
     headers: { "Content-Type": "application/json", ...options.headers }
   });
-  const result = await response.json();
+
+  const text = await response.text();
+  let result;
+  try {
+    result = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error("Server is starting up, please try again in a few seconds.");
+  }
+
   if (!response.ok || result.success === false) {
-    throw new Error(result.error?.message || "Request failed.");
+    const error = new Error(result.error?.message || "Request failed.");
+    error.code = result.error?.code;
+    throw error;
   }
   return result.data;
 }

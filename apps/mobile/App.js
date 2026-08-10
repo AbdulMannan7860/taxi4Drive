@@ -2,6 +2,7 @@ import { useFonts as useMontserrat, Montserrat_700Bold, Montserrat_800ExtraBold 
 import { useFonts as usePoppins, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from "@expo-google-fonts/poppins";
 import * as Notifications from "expo-notifications";
 import * as SecureStore from "expo-secure-store";
+import * as Updates from "expo-updates";
 import { useEffect, useRef, useState } from "react";
 import { Platform, SafeAreaView, StatusBar } from "react-native";
 import { getBookings, login, registerPushToken } from "./src/api";
@@ -11,6 +12,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import NotificationsScreen from "./src/screens/NotificationsScreen";
 
 const JWT_KEY = "taxi2airport_admin_jwt";
+const SESSION_ERROR_CODES = ["SESSION_EXPIRED", "AUTH_REQUIRED"];
 
 export default function App() {
   const [jwt, setJwt] = useState(null);
@@ -28,6 +30,14 @@ export default function App() {
       setJwt(stored);
       setCheckingSession(false);
     });
+
+    if (__DEV__ || !Updates.isEnabled) return;
+    Updates.checkForUpdateAsync()
+      .then((update) => (update.isAvailable ? Updates.fetchUpdateAsync() : null))
+      .then((result) => {
+        if (result?.isNew) return Updates.reloadAsync();
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -37,7 +47,10 @@ export default function App() {
       .then(({ bookings }) => {
         setNotifications(bookings.map((booking) => ({ booking, receivedAt: new Date(booking.createdAt) })));
       })
-      .catch((error) => setPushWarning(error.message));
+      .catch((error) => {
+        if (SESSION_ERROR_CODES.includes(error.code)) return handleSignOut();
+        setPushWarning(error.message);
+      });
 
     registerForPushNotificationsAsync()
       .then((token) => registerPushToken(jwt, token, Platform.OS))
@@ -101,6 +114,7 @@ export default function App() {
           jwt={jwt}
           onBack={() => setSelected(null)}
           onStatusUpdate={handleStatusUpdate}
+          onSessionExpired={handleSignOut}
         />
       ) : (
         <NotificationsScreen

@@ -20,7 +20,9 @@ const STATUSES = [
   { value: "completed", label: "Completed" }
 ];
 
-export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate }) {
+const SESSION_ERROR_CODES = ["SESSION_EXPIRED", "AUTH_REQUIRED"];
+
+export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, onSessionExpired }) {
   const [driverName, setDriverName] = useState(booking.driverName || "");
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +44,10 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate }) 
       );
       onStatusUpdate(updated);
     } catch (err) {
+      if (SESSION_ERROR_CODES.includes(err.code)) {
+        onSessionExpired();
+        return;
+      }
       setError(err.message);
     } finally {
       setUpdating(false);

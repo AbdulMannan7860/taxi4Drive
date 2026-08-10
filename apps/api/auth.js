@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { sendError } = require("./responses");
 
 function createToken() {
-  return jwt.sign({ role: "admin" }, process.env.JWT_SECRET || "dev-secret", { expiresIn: "12h" });
+  return jwt.sign({ role: "admin" }, process.env.JWT_SECRET || "dev-secret", { expiresIn: "30m" });
 }
 
 function requireAdmin(req, res, next) {

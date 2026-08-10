@@ -2,7 +2,7 @@
   "expo": {
     "name": "Taxi2Airport Admin",
     "slug": "taxi2airport-admin",
-    "version": "1.0.0",
+    "version": "1.0",
     "runtimeVersion": {
       "policy": "appVersion"
     },
