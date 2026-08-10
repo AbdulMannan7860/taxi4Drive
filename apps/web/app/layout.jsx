@@ -68,7 +68,7 @@ export default function RootLayout({ children }) {
       "North Shore",
       "Western Sydney"
     ],
-    telephone: "1300 22 77 00",
+    telephone: "1300 822 382",
     email: "book@taxi2airport.com.au",
     serviceType: [
       "Airport Transfers",

@@ -26,13 +26,13 @@ import LocationField from "./components/LocationField";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
 const contact = {
-  phone: "1300 22 77 00",
-  phoneHref: "tel:1300227700",
-  sms: "+61 488 836 062",
-  smsHref: "sms:+61488836062",
+  phone: "1300 822 382",
+  phoneHref: "tel:1300822382",
+  sms: "1300 822 382",
+  smsHref: "sms:1300822382",
   email: "book@taxi2airport.com.au",
   emailHref: "mailto:book@taxi2airport.com.au",
-  whatsappHref: "https://wa.me/61488836062",
+  whatsappHref: "https://wa.me/61466997091",
   address: "Sydney, NSW, Australia"
 };
 
