@@ -70,7 +70,6 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
         <Row label="Date" value={booking.date} />
         <Row label="Time" value={booking.time} />
         <Row label="Vehicle" value={booking.vehicle} />
-        <Row label="Estimated fare" value={booking.estimatedFare ? `$${booking.estimatedFare}` : ""} />
 
         <Text style={styles.sectionTitle}>Status</Text>
         <View style={styles.statusRow}>
