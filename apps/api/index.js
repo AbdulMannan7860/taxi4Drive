@@ -179,6 +179,10 @@ app.patch("/api/bookings/:id/status", requireAdmin, async (req, res, next) => {
       return sendError(res, 404, "BOOKING_NOT_FOUND", "Booking not found.");
     }
 
+    if (existing.status === "completed") {
+      return sendError(res, 409, "BOOKING_ALREADY_COMPLETED", "This booking is completed and can no longer be updated.");
+    }
+
     const update = { status: parsed.data.status, updatedAt: new Date() };
     if (parsed.data.driverName) update.driverName = parsed.data.driverName;
 

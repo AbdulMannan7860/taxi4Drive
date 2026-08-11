@@ -26,8 +26,10 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
   const [driverName, setDriverName] = useState(booking.driverName || "");
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
+  const isCompleted = booking.status === "completed";
 
   async function handleStatusPress(status) {
+    if (isCompleted) return;
     if (status === "dispatched" && !driverName.trim()) {
       setError("Enter the driver's name to dispatch this booking.");
       return;
@@ -80,13 +82,15 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
                 key={item.value}
                 style={[styles.statusPill, active && styles.statusPillActive]}
                 onPress={() => handleStatusPress(item.value)}
-                disabled={updating}
+                disabled={updating || isCompleted}
               >
                 <Text style={[styles.statusPillText, active && styles.statusPillTextActive]}>{item.label}</Text>
               </TouchableOpacity>
             );
           })}
         </View>
+
+        {isCompleted && <Text style={styles.locked}>This booking is completed and can no longer be updated.</Text>}
 
         <Text style={styles.label}>Driver name</Text>
         <TextInput
@@ -95,7 +99,7 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
           placeholderTextColor={colors.slate}
           value={driverName}
           onChangeText={setDriverName}
-          editable={!updating}
+          editable={!updating && !isCompleted}
         />
 
         {updating && <ActivityIndicator color={colors.gold} style={{ marginTop: 12 }} />}
@@ -134,6 +138,7 @@ const styles = StyleSheet.create({
   statusPillActive: { backgroundColor: colors.gold, borderColor: colors.gold },
   statusPillText: { fontFamily: fonts.bodySemiBold, color: colors.steel, fontSize: 13 },
   statusPillTextActive: { color: colors.night },
+  locked: { fontFamily: fonts.body, color: colors.slate, fontSize: 13, marginTop: -10, marginBottom: 16 },
   input: {
     fontFamily: fonts.body,
     color: colors.white,
