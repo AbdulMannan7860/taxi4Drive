@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors, fonts } from "../theme";
 
@@ -16,8 +16,26 @@ const STATUS_COLORS = {
   completed: colors.success
 };
 
+function formatRelativeTime(date) {
+  const seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  if (seconds < 5) return "just now";
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
 export default function NotificationsScreen({ notifications, pushWarning, onSelect, onSignOut }) {
   const [filter, setFilter] = useState("all");
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => setTick((tick) => tick + 1), 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const filtered = useMemo(() => {
     if (filter === "all") return notifications;
@@ -67,9 +85,7 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.card} onPress={() => onSelect(item)}>
               <View style={styles.cardTopRow}>
-                <View style={styles.cardIcon}>
-                  <Ionicons name="car" size={18} color={colors.gold} />
-                </View>
+                <Text style={styles.timeAgo}>{formatRelativeTime(item.receivedAt)}</Text>
                 <View style={styles.statusBadge}>
                   <View style={[styles.statusDot, { backgroundColor: STATUS_COLORS[item.booking.status] || colors.steel }]} />
                   <Text style={styles.statusLabel}>{item.booking.status || "pending"}</Text>
@@ -78,9 +94,14 @@ export default function NotificationsScreen({ notifications, pushWarning, onSele
               <View style={styles.cardBody}>
                 <Text style={styles.reference}>{item.booking.reference}</Text>
                 <Text style={styles.customer}>{item.booking.customerName}</Text>
-                <Text style={styles.route}>
-                  {item.booking.pickup} → {item.booking.dropoff}
-                </Text>
+                <View style={styles.routeLine}>
+                  <Ionicons name="radio-button-on" size={10} color={colors.gold} />
+                  <Text style={styles.routeText} numberOfLines={1}>{item.booking.pickup}</Text>
+                </View>
+                <View style={styles.routeLine}>
+                  <Ionicons name="location" size={11} color={colors.steel} />
+                  <Text style={styles.routeText} numberOfLines={1}>{item.booking.dropoff}</Text>
+                </View>
               </View>
             </TouchableOpacity>
           )}
@@ -127,18 +148,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 12
   },
-  cardIcon: {
-    height: 36,
-    width: 36,
-    borderRadius: 10,
-    backgroundColor: colors.night,
-    alignItems: "center",
-    justifyContent: "center"
-  },
+  timeAgo: { fontFamily: fonts.body, color: colors.slate, fontSize: 12 },
   cardBody: {},
   reference: { fontFamily: fonts.bodyBold, color: colors.gold, fontSize: 14, marginBottom: 4 },
-  customer: { fontFamily: fonts.bodySemiBold, color: colors.white, fontSize: 16, marginBottom: 2 },
-  route: { fontFamily: fonts.body, color: colors.steel, fontSize: 14 },
+  customer: { fontFamily: fonts.bodySemiBold, color: colors.white, fontSize: 16, marginBottom: 6 },
+  routeLine: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 3 },
+  routeText: { fontFamily: fonts.body, color: colors.steel, fontSize: 14, flexShrink: 1 },
   statusBadge: {
     flexDirection: "row",
     alignItems: "center",
