@@ -50,6 +50,10 @@ const statusSchema = z
     path: ["driverName"]
   });
 
+const fareSchema = z.object({
+  confirmedFare: z.coerce.number().min(0).max(10000)
+});
+
 const pushTokenSchema = z.object({
   token: z.string().min(10).max(200),
   platform: z.enum(["ios", "android"]).optional().default("android")
@@ -58,5 +62,6 @@ const pushTokenSchema = z.object({
 module.exports = {
   bookingSchema,
   statusSchema,
+  fareSchema,
   pushTokenSchema
 };

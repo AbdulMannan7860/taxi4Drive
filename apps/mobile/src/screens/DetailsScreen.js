@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { updateBookingStatus } from "../api";
+import { updateBookingFare, updateBookingStatus } from "../api";
 import { colors, fonts } from "../theme";
 
 function Row({ label, value }) {
@@ -24,9 +24,40 @@ const SESSION_ERROR_CODES = ["SESSION_EXPIRED", "AUTH_REQUIRED"];
 
 export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, onSessionExpired }) {
   const [driverName, setDriverName] = useState(booking.driverName || "");
+  const [confirmedFare, setConfirmedFare] = useState(
+    booking.confirmedFare != null ? String(booking.confirmedFare) : ""
+  );
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState("");
   const isCompleted = booking.status === "completed";
+
+  function handleErrorOrSessionExpiry(err) {
+    if (SESSION_ERROR_CODES.includes(err.code)) {
+      onSessionExpired();
+      return true;
+    }
+    setError(err.message);
+    return false;
+  }
+
+  async function handleSaveFare() {
+    const amount = Number(confirmedFare);
+    if (!confirmedFare.trim() || Number.isNaN(amount) || amount < 0) {
+      setError("Enter a valid confirmed price.");
+      return;
+    }
+
+    setError("");
+    setUpdating(true);
+    try {
+      const { booking: updated } = await updateBookingFare(jwt, booking._id, amount);
+      onStatusUpdate(updated);
+    } catch (err) {
+      handleErrorOrSessionExpiry(err);
+    } finally {
+      setUpdating(false);
+    }
+  }
 
   async function handleStatusPress(status) {
     if (isCompleted) return;
@@ -46,11 +77,7 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
       );
       onStatusUpdate(updated);
     } catch (err) {
-      if (SESSION_ERROR_CODES.includes(err.code)) {
-        onSessionExpired();
-        return;
-      }
-      setError(err.message);
+      handleErrorOrSessionExpiry(err);
     } finally {
       setUpdating(false);
     }
@@ -102,6 +129,26 @@ export default function DetailsScreen({ booking, jwt, onBack, onStatusUpdate, on
           editable={!updating && !isCompleted}
         />
 
+        <Text style={[styles.label, { marginTop: 16 }]}>Confirmed price with customer</Text>
+        <View style={styles.fareRow}>
+          <TextInput
+            style={[styles.input, styles.fareInput]}
+            placeholder="e.g. 85"
+            placeholderTextColor={colors.slate}
+            value={confirmedFare}
+            onChangeText={setConfirmedFare}
+            keyboardType="decimal-pad"
+            editable={!updating && !isCompleted}
+          />
+          <TouchableOpacity
+            style={[styles.saveFareButton, (updating || isCompleted) && styles.saveFareButtonDisabled]}
+            onPress={handleSaveFare}
+            disabled={updating || isCompleted}
+          >
+            <Text style={styles.saveFareButtonText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+
         {updating && <ActivityIndicator color={colors.gold} style={{ marginTop: 12 }} />}
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </ScrollView>
@@ -149,5 +196,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12
   },
+  fareRow: { flexDirection: "row", gap: 10, alignItems: "stretch" },
+  fareInput: { flex: 1 },
+  saveFareButton: {
+    backgroundColor: colors.gold,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  saveFareButtonDisabled: { opacity: 0.5 },
+  saveFareButtonText: { fontFamily: fonts.bodyBold, color: colors.night, fontSize: 15 },
   error: { fontFamily: fonts.body, color: colors.error, fontSize: 13, marginTop: 12 }
 });

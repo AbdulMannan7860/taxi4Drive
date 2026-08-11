@@ -47,3 +47,11 @@ export function updateBookingStatus(jwt, id, status, driverName) {
     body: JSON.stringify(driverName ? { status, driverName } : { status })
   });
 }
+
+export function updateBookingFare(jwt, id, confirmedFare) {
+  return request(`/bookings/${id}/fare`, {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${jwt}` },
+    body: JSON.stringify({ confirmedFare })
+  });
+}

@@ -18,7 +18,7 @@ const { log, requestLogger } = require("./logger");
 const { sendBookingEmails } = require("./mailer");
 const { registerPushToken, sendBookingPush } = require("./push");
 const { sendError, sendSuccess } = require("./responses");
-const { bookingSchema, pushTokenSchema, statusSchema } = require("./validation");
+const { bookingSchema, fareSchema, pushTokenSchema, statusSchema } = require("./validation");
 
 const app = express();
 const port = Number(process.env.PORT || 6000);
@@ -199,6 +199,47 @@ app.patch("/api/bookings/:id/status", requireAdmin, async (req, res, next) => {
     });
 
     return sendSuccess(res, { booking: result }, "Booking status updated.");
+  } catch (error) {
+    return next(error);
+  }
+});
+
+app.patch("/api/bookings/:id/fare", requireAdmin, async (req, res, next) => {
+  try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return sendError(res, 400, "INVALID_BOOKING_ID", "Invalid booking id.");
+    }
+
+    const parsed = fareSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendError(
+        res,
+        400,
+        "INVALID_FARE",
+        parsed.error.issues[0]?.message || "Invalid confirmed fare."
+      );
+    }
+
+    const existing = await bookingsCollection().findOne({ _id: new ObjectId(req.params.id) });
+    if (!existing) {
+      return sendError(res, 404, "BOOKING_NOT_FOUND", "Booking not found.");
+    }
+
+    if (existing.status === "completed") {
+      return sendError(res, 409, "BOOKING_ALREADY_COMPLETED", "This booking is completed and can no longer be updated.");
+    }
+
+    const result = await bookingsCollection().findOneAndUpdate(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { confirmedFare: parsed.data.confirmedFare, updatedAt: new Date() } },
+      { returnDocument: "after" }
+    );
+
+    await writeAuditLog("booking.fare.updated", result._id, req.admin?.role || "admin", {
+      confirmedFare: parsed.data.confirmedFare
+    });
+
+    return sendSuccess(res, { booking: result }, "Confirmed fare saved.");
   } catch (error) {
     return next(error);
   }
