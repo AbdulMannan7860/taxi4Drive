@@ -40,9 +40,8 @@ export default function App() {
       .catch(() => {});
   }, []);
 
-  useEffect(() => {
+  function refreshBookings() {
     if (!jwt) return;
-
     getBookings(jwt)
       .then(({ bookings }) => {
         setNotifications(bookings.map((booking) => ({ booking, receivedAt: new Date(booking.createdAt) })));
@@ -51,6 +50,12 @@ export default function App() {
         if (SESSION_ERROR_CODES.includes(error.code)) return handleSignOut();
         setPushWarning(error.message);
       });
+  }
+
+  useEffect(() => {
+    if (!jwt) return;
+
+    refreshBookings();
 
     registerForPushNotificationsAsync()
       .then((token) => registerPushToken(jwt, token, Platform.OS))
@@ -112,7 +117,10 @@ export default function App() {
         <DetailsScreen
           booking={selected.booking}
           jwt={jwt}
-          onBack={() => setSelected(null)}
+          onBack={() => {
+            setSelected(null);
+            refreshBookings();
+          }}
           onStatusUpdate={handleStatusUpdate}
           onSessionExpired={handleSignOut}
         />
