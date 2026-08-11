@@ -25,7 +25,7 @@ function bookingHtml(booking) {
       <p><strong>Reference:</strong> ${booking.reference}</p>
       <p><strong>Customer:</strong> ${booking.customerName}</p>
       <p><strong>Phone:</strong> ${booking.phone}</p>
-      <p><strong>Email:</strong> ${booking.email}</p>
+      ${booking.email ? `<p><strong>Email:</strong> ${booking.email}</p>` : ""}
       <p><strong>Journey:</strong> ${booking.pickup} to ${booking.dropoff}</p>
       <p><strong>Date/time:</strong> ${booking.date} ${booking.time}</p>
       <p><strong>Vehicle:</strong> ${booking.vehicle}</p>

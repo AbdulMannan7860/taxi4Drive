@@ -22,7 +22,12 @@ const bookingSchema = z.object({
   business: z.boolean().default(false),
   flightTracking: z.boolean().default(true),
   customerName: z.string().min(2).max(120).regex(/\p{L}/u, "Enter a valid full name."),
-  email: z.string().email().max(160),
+  email: z
+    .string()
+    .max(160)
+    .optional()
+    .default("")
+    .refine((value) => !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), "Enter a valid email address."),
   phone: z
     .string()
     .min(6)

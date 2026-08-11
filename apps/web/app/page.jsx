@@ -236,7 +236,8 @@ function validateBooking(booking) {
     errors.phone = "Enter a valid phone number, e.g. +61 4XX XXX XXX.";
   }
 
-  if (!EMAIL_RE.test(booking.email.trim())) {
+  const email = booking.email.trim();
+  if (email && !EMAIL_RE.test(email)) {
     errors.email = "Enter a valid email address.";
   }
 
@@ -433,14 +434,13 @@ export default function HomePage() {
                   {fieldErrors.phone && <span className="field-error">{fieldErrors.phone}</span>}
                 </label>
               </div>
-              <label>Email
+              <label>Email (optional)
                 <input
                   value={booking.email}
                   onChange={(event) => updateBooking("email", event.target.value)}
                   type="email"
                   placeholder="you@example.com"
                   aria-invalid={Boolean(fieldErrors.email)}
-                  required
                 />
                 {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
               </label>
