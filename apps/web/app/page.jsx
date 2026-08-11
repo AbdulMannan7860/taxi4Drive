@@ -10,7 +10,6 @@ import {
   ChevronRight,
   Clock3,
   MapPin,
-  MessageCircle,
   Phone,
   Plane,
   Ship,
@@ -29,8 +28,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 const contact = {
   phone: "1300 822 382",
   phoneHref: "tel:1300822382",
-  sms: "1300 822 382",
-  smsHref: "sms:1300822382",
+  whatsapp: "+61 466 997 091",
   whatsappHref: "https://wa.me/61466997091",
   address: "Sydney, NSW, Australia"
 };
@@ -467,7 +465,7 @@ export default function HomePage() {
 
         <section className="quick-contact" aria-label="Immediate contact options">
           <a href={contact.phoneHref}><Phone size={19} /><span>Call</span><strong>{contact.phone}</strong></a>
-          <a href={contact.smsHref}><MessageCircle size={19} /><span>SMS</span><strong>{contact.sms}</strong></a>
+          <a href={contact.whatsappHref}><WhatsAppIcon size={19} /><span>WhatsApp</span><strong>{contact.whatsapp}</strong></a>
         </section>
 
         <section className="section about" id="about">
@@ -598,7 +596,7 @@ export default function HomePage() {
             </div>
             <address className="contact-card">
               <a href={contact.phoneHref}><Phone size={18} /> {contact.phone}</a>
-              <a href={contact.smsHref}><MessageCircle size={18} /> SMS {contact.sms}</a>
+              <a href={contact.whatsappHref}><WhatsAppIcon size={18} /> WhatsApp {contact.whatsapp}</a>
               <span><MapPin size={18} /> {contact.address}</span>
               <span><CalendarClock size={18} /> Available 24/7</span>
             </address>
