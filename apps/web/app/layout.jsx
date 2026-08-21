@@ -8,6 +8,7 @@ import SiteFooter from "./components/SiteFooter";
 import MobileStickyActions from "./components/MobileStickyActions";
 
 const clarityProjectId = "y3r3ibaecv";
+const googleAdsId = "AW-18399898208";
 
 const siteUrl = "https://www.taxi2airport.com.au";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"], variable: "--font-body" });
@@ -103,6 +104,17 @@ export default function RootLayout({ children }) {
         />
         <Analytics />
         <SpeedInsights />
+        <Script
+          id="google-ads-tag"
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+        />
+        <Script id="google-ads-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${googleAdsId}');`}
+        </Script>
         <Script id="clarity-tag" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
